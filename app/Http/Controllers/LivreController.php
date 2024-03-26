@@ -42,7 +42,7 @@ class LivreController extends Controller
         ]);
 
         DB::table('livres')->insert($newLivre);
-        return redirect()->route('livre.index')->with('success', 'Creation de livre avec success');
+        return redirect()->route('livre.index')->with('success', 'Creation avec success');
     }
 
 
@@ -52,23 +52,31 @@ class LivreController extends Controller
      */
     public function edit($id)
     {
-        $livre = DB::table('livres')->wheres('id', $id)->first();
+        $livre = DB::table('livres')->where('id', '=', $id)->first();
         return view('Biblio.edit', compact('livre'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+
+        $newLivre = $request->validate([
+            'titre' => 'required|string',
+            'anneepub' => 'required|integer',
+            'nbrpages' => 'required|integer',
+        ]);
+        DB::table('livres')->where('id', '=', $id)->update($newLivre);
+        return redirect()->route('livre.index')->with('success', 'Modification avec success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete($id)
     {
-        //
+        DB::table('livres')->where('id', '=', $id)->delete();
+        return redirect()->route('livre.index')->with('success', 'Suppression avec success');
     }
 }

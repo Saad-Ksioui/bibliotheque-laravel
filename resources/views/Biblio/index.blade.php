@@ -15,11 +15,11 @@
       <h1>Liste des livres</h1>
       <a href="{{ route('livre.create') }}" class="btn btn-primary">Créer un livre</a>
     </header>
-    <div class="alert">
-      @if (session()->has('success'))
+    @if (session()->has('success'))
+      <div class="alert alert-success">
         {{ session('success') }}
-      @endif
-    </div>
+      </div>
+    @endif
     <table class="table">
       <tr>
         <th>Livre Id</th>
@@ -37,8 +37,8 @@
           <td>{{ $livre->nbrpages }}</td>
           <td>{{ $livre->nom }}</td>
           <td class="d-flex justify-content-between align-items-center">
-            <a href="{{ route('livre.edit') }}" class="btn btn-success">Modifier</a>
-            <form action="" method="post">
+            <a href="{{ route('livre.edit', ['id' => $livre->id]) }}" class="btn btn-success">Modifier</a>
+            <form action="{{ route('livre.delete', ['id' => $livre->id]) }}" method="post">
               @csrf
               @method('delete')
               <input type="submit" class="btn btn-danger" value="Supprimer">
@@ -51,6 +51,12 @@
       {{ $livres->links() }}
     </div>
   </div>
+
+  <script>
+    setTimeout(() => {
+      document.querySelector('.alert').style.display = 'none'
+    }, 2000);
+  </script>
 </body>
 
 </html>
