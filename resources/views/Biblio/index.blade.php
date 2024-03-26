@@ -13,7 +13,10 @@
   <div class="container mt-5">
     <header class="d-flex justify-content-between align-items-center">
       <h1>Liste des livres</h1>
-      <a href="{{ route('livre.create') }}" class="btn btn-primary">Créer un livre</a>
+      <div class="links">
+        <a href="{{ route('livre.create') }}" class="btn btn-primary">Créer un livre</a>
+        <a href="{{ route('auteur.create') }}" class="btn btn-primary">Créer un auteur</a>
+      </div>
     </header>
     @if (session()->has('success'))
       <div class="alert alert-success">

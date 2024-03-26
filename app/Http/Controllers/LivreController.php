@@ -29,6 +29,8 @@ class LivreController extends Controller
         return view('Biblio.createLivre', compact('auteurs'));
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -44,6 +46,8 @@ class LivreController extends Controller
         DB::table('livres')->insert($newLivre);
         return redirect()->route('livre.index')->with('success', 'Creation avec success');
     }
+
+
 
 
 

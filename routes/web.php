@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuteurController;
 use App\Http\Controllers\LivreController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,6 @@ Route::post('/store-livre', [LivreController::class, 'store'])->name('livre.stor
 Route::get('/edit-livre/{id}', [LivreController::class, 'edit'])->name('livre.edit');
 Route::put('/update-livre/{id}', [LivreController::class, 'update'])->name('livre.update');
 Route::delete('/delete-livre/{id}', [LivreController::class, 'delete'])->name('livre.delete');
+
+Route::get('/creer-auteur', [AuteurController::class, 'create'])->name('auteur.create');
+Route::post('/store-auteur', [AuteurController::class, 'store'])->name('auteur.store');
