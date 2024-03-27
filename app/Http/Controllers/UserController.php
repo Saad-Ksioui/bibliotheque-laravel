@@ -53,7 +53,7 @@ class UserController extends Controller
             'email'=>'required|email',
             'password'=>'required'
         ]);
-        if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+        if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']], $request->filled('rememberme'))) {
             return redirect()->route('livre.index')->with('success', 'Vous êtes maintenant connecté!');
         } else {
             return back()->withErrors('error', 'Email ou mot de passe incorrecte')->withInput(request(["email"]));
