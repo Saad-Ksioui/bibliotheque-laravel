@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <title>Les Livres</title>
+  <title>Liste des auteurs</title>
   <style>
     .popUp {
       background-color: #fff;
@@ -45,66 +45,59 @@
 
 <body>
   <div class="container mt-5">
-    <header class="d-flex justify-content-between align-items-center">
-      <h1>Liste des livres</h1>
-      <div class="links">
-        <a href="{{ route('livre.create') }}" class="btn btn-primary">Créer un livre</a>
-        <a href="{{ route('auteur.index') }}" class="btn btn-primary">Liste des auteurs</a>
-      </div>
-    </header>
-    <div class="profile mt-4 mb-4">
-      @if (isset($user))
-        <a href="{{ route('profile') }}" class="btn btn-primary">Profile</a>
-        <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
-      @endif
+    <div class="header d-flex justify-content-between align-items-center">
+      <h1>Liste des auteurs</h1>
+      <a href="{{ route('auteur.create') }}" class="btn btn-primary">Créer un auteur</a>
     </div>
     @if (session()->has('success'))
       <div class="alert alert-success">
         {{ session('success') }}
       </div>
     @endif
-    <table class="table">
+    <table class="table table">
       <tr>
-        <th>Livre Id</th>
-        <th>Titre</th>
-        <th>Année de publication</th>
-        <th>Nombre des pages</th>
-        <th>Nom de l'auteur</th>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Auteur Livres</th>
         <th>Operation</th>
       </tr>
-      @foreach ($livres as $livre)
+      @foreach ($auteurs as $auteur)
         <tr>
-          <td>{{ $livre->id }}</td>
-          <td>{{ $livre->titre }}</td>
-          <td>{{ $livre->anneepub }}</td>
-          <td>{{ $livre->nbrpages }}</td>
-          <td>{{ $livre->nom }} {{ $livre->prenom }}</td>
+          <td>{{ $auteur->id }}</td>
+          <td>{{ $auteur->nom }}</td>
+          <td>{{ $auteur->prenom }}</td>
+          <td>
+            <ul>
+              @foreach ($auteur->livres()->get() as $titre)
+                <li>{{ $titre->titre }}</li>
+              @endforeach
+            </ul>
+          </td>
           <td class="d-flex justify-content-between align-items-center">
-            <a href="{{ route('livre.edit', ['id' => $livre->id]) }}" class="btn btn-success">Modifier</a>
-            <button class="btn btn-danger" onclick="showPopUp({{ $livre->id }})">Supprimer</button>
-
+            <a href="{{ route('auteur.edit', ['id' => $auteur->id]) }}" class="btn btn-success">Modifier</a>
+            <button class="btn btn-danger" onclick="showPopUp({{ $auteur->id }})">Supprimer</button>
           </td>
         </tr>
-        <div id="popUp{{ $livre->id }}" class="popUp">
+        <div id="popUp{{ $auteur->id }}" class="popUp">
           <h2>Confirmer la suppression</h2>
           <div class="btns">
-            <form action="{{ route('livre.delete', ['id' => $livre->id]) }}" method="post">
+            <form action="{{ route('auteur.delete', ['id' => $auteur->id]) }}" method="post">
               @csrf
               @method('delete')
               <input type="submit" class="btn btn-danger" value="Supprimer">
             </form>
-            <button class="btn btn-primary" onclick="hidePopUp()">Retour</button>
+            <button class="btn btn-primary" onclick="hidePopUp({{ $auteur->id }})">Retour</button>
           </div>
         </div>
       @endforeach
     </table>
+
     <div class="pagination">
-      {{ $livres->links() }}
+      {{ $auteurs->links() }}
     </div>
 
   </div>
-
-
   <script>
     setTimeout(() => {
       document.querySelector('.alert').style.display = 'none'

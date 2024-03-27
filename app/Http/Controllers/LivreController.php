@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class LivreController extends Controller
 {
@@ -12,12 +13,13 @@ class LivreController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $livres = DB::table('livres')
             ->join('auteurs', 'livres.auteur_id', '=', 'auteurs.id')
-            ->select('livres.id', 'livres.titre', 'livres.anneepub', 'livres.nbrpages', 'auteurs.nom')
+            ->select('livres.id', 'livres.titre', 'livres.anneepub', 'livres.nbrpages', 'auteurs.nom', 'auteurs.prenom')
             ->paginate(3);
 
-        return view('Biblio.index', compact('livres'));
+        return view('Biblio.index', compact('livres', 'user'));
     }
 
     /**
@@ -43,7 +45,13 @@ class LivreController extends Controller
             'auteur_id' => 'required',
         ]);
 
-        DB::table('livres')->insert($newLivre);
+        DB::table('livres')->insert([
+            'id' => DB::table('livres')->count() + 1,
+            'titre' => $newLivre['titre'],
+            'anneepub' => $newLivre['anneepub'],
+            'nbrpages' => $newLivre['nbrpages'],
+            'auteur_id' => $newLivre['auteur_id'],
+        ]);
         return redirect()->route('livre.index')->with('success', 'Creation avec success');
     }
 
@@ -80,7 +88,8 @@ class LivreController extends Controller
      */
     public function delete($id)
     {
-        DB::table('livres')->where('id', '=', $id)->delete();
+        DB::table('livres')->where('id', $id)->delete();
+        
         return redirect()->route('livre.index')->with('success', 'Suppression avec success');
     }
 }

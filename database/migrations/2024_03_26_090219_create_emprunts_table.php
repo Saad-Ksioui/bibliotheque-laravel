@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('dateemprunt');
             $table->date('dateretour');
             $table->unsignedBigInteger('livre_id');
-            $table->foreign('livre_id')->references('id')->on('livres');
+            $table->foreign('livre_id')->references('id')->on('livres')->onDelete('cascade');
             $table->timestamps();
         });
     }
