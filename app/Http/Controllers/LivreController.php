@@ -16,8 +16,7 @@ class LivreController extends Controller
         $user = Auth::user();
         $livres = DB::table('livres')
             ->join('auteurs', 'livres.auteur_id', '=', 'auteurs.id')
-            ->select('livres.id', 'livres.titre', 'livres.anneepub', 'livres.nbrpages', 'auteurs.nom', 'auteurs.prenom')
-            ->paginate(3);
+            ->select('livres.id', 'livres.titre', 'livres.anneepub', 'livres.nbrpages', 'auteurs.nom', 'auteurs.prenom')->orderBy('livres.id')->paginate(3);
 
         return view('Biblio.index', compact('livres', 'user'));
     }
@@ -45,19 +44,9 @@ class LivreController extends Controller
             'auteur_id' => 'required',
         ]);
 
-        DB::table('livres')->insert([
-            'id' => DB::table('livres')->count() + 1,
-            'titre' => $newLivre['titre'],
-            'anneepub' => $newLivre['anneepub'],
-            'nbrpages' => $newLivre['nbrpages'],
-            'auteur_id' => $newLivre['auteur_id'],
-        ]);
+        DB::table('livres')->insert($newLivre);
         return redirect()->route('livre.index')->with('success', 'Creation avec success');
     }
-
-
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -89,7 +78,7 @@ class LivreController extends Controller
     public function delete($id)
     {
         DB::table('livres')->where('id', $id)->delete();
-        
+
         return redirect()->route('livre.index')->with('success', 'Suppression avec success');
     }
 }

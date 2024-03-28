@@ -82,17 +82,24 @@
     .formSubmitButton input:hover {
       background-color: #0056b3;
     }
+    .alert-register{
+      background-color: green;
+      padding: 10px 20px;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="loginForm">
-      @if (session()->has('success'))
-          <div class="alert alert-success">
-            {{ session('success') }}
+    @if (session()->has('register'))
+          <div id="alert" class="alert-register">
+            {{ session('register') }}
           </div>
       @endif
+    <div class="loginForm">
       <h1>Login</h1>
       <form action="{{ route('login.user') }}" method="post">
         @csrf
@@ -119,6 +126,12 @@
       </form>
     </div>
   </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById('alert').style.display = 'none'
+    }, 3000);
+  </script>
 </body>
 
 </html>

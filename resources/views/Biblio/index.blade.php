@@ -40,11 +40,25 @@
     .btns .btn+.btn {
       margin-left: 10px;
     }
+
+    .alert-login {
+      background-color: green;
+      color: white;
+      padding: 10px 20px;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
   </style>
 </head>
 
 <body>
   <div class="container mt-5">
+    @if (session()->has('login'))
+      <div class="alert alert-login">
+        {{ session('login') }}
+      </div>
+    @endif
     <header class="d-flex justify-content-between align-items-center">
       <h1>Liste des livres</h1>
       <div class="links">
@@ -82,7 +96,6 @@
           <td class="d-flex justify-content-between align-items-center">
             <a href="{{ route('livre.edit', ['id' => $livre->id]) }}" class="btn btn-success">Modifier</a>
             <button class="btn btn-danger" onclick="showPopUp({{ $livre->id }})">Supprimer</button>
-
           </td>
         </tr>
         <div id="popUp{{ $livre->id }}" class="popUp">

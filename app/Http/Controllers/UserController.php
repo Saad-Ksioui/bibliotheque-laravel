@@ -39,7 +39,7 @@ class UserController extends Controller
             'password'=>Hash::make($newUser['password']),
         ]);
 
-        return view('auth.login')->with('success', $newUser['username'].' Vous vous êtes inscrit avec succès');
+        return view('auth.login')->with('register', 'Vous êtes inscrit avec succès');
     }
 
     public function login()
@@ -54,7 +54,7 @@ class UserController extends Controller
             'password'=>'required'
         ]);
         if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']], $request->filled('rememberme'))) {
-            return redirect()->route('livre.index')->with('success', 'Vous êtes maintenant connecté!');
+            return redirect()->route('livre.index')->with('login', 'Vous êtes maintenant connecté!');
         } else {
             return back()->withErrors('error', 'Email ou mot de passe incorrecte')->withInput(request(["email"]));
         }

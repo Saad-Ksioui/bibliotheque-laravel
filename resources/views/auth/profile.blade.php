@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <section class="vh-100" style="background-color: #9de2ff;">
+  <section class="vh-100">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-md-9 col-lg-7 col-xl-5">
